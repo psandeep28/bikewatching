@@ -114,8 +114,10 @@ console.log(stations.slice(0, 5)); // Optional: print first 5 stations for manua
     .domain([0, d3.max(stations, (d) => d.totalTraffic)])
     .range([0, 25]);
 
-  // --- Draw station circles ---
-  const circles = svg
+// Get the tooltip div
+const tooltip = d3.select('#tooltip');
+
+const circles = svg
   .selectAll('circle')
   .data(stations)
   .enter()
@@ -123,10 +125,24 @@ console.log(stations.slice(0, 5)); // Optional: print first 5 stations for manua
   .attr('r', (d) => radiusScale(d.totalTraffic))
   .attr('fill', 'steelblue')
   .attr('stroke', 'white')
-  .attr('stroke-width', 1)
-  .attr('opacity', 0.6)
-  .each(function (d) {
-    this.title = `${d.totalTraffic} trips (${d.departures} departures, ${d.arrivals} arrivals)`;
+  .attr('stroke-width', 1.5)
+  .attr('opacity', 0.8)
+  .on('mouseover', function (event, d) {
+    tooltip
+      .style('display', 'block')
+      .html(
+        `<strong>${d.totalTraffic} trips</strong><br>${d.departures} departures<br>${d.arrivals} arrivals`
+      );
+    d3.select(this).attr('stroke', 'yellow');
+  })
+  .on('mousemove', function (event) {
+    tooltip
+      .style('left', event.pageX + 12 + 'px')
+      .style('top', event.pageY - 28 + 'px');
+  })
+  .on('mouseout', function () {
+    tooltip.style('display', 'none');
+    d3.select(this).attr('stroke', 'white');
   });
 
   // --- Function to update circle positions ---
