@@ -116,22 +116,18 @@ console.log(stations.slice(0, 5)); // Optional: print first 5 stations for manua
 
   // --- Draw station circles ---
   const circles = svg
-    .selectAll('circle')
-    .data(stations)
-    .enter()
-    .append('circle')
-    .attr('r', (d) => radiusScale(d.totalTraffic))
-    .attr('fill', 'steelblue')
-    .attr('stroke', 'white')
-    .attr('stroke-width', 1)
-    .attr('opacity', 0.6)
-    .each(function (d) {
-      d3.select(this)
-        .append('title')
-        .text(
-          `${d.totalTraffic} trips (${d.departures} departures, ${d.arrivals} arrivals)`
-        );
-    });
+  .selectAll('circle')
+  .data(stations)
+  .enter()
+  .append('circle')
+  .attr('r', (d) => radiusScale(d.totalTraffic))
+  .attr('fill', 'steelblue')
+  .attr('stroke', 'white')
+  .attr('stroke-width', 1)
+  .attr('opacity', 0.6)
+  .each(function (d) {
+    this.title = `${d.totalTraffic} trips (${d.departures} departures, ${d.arrivals} arrivals)`;
+  });
 
   // --- Function to update circle positions ---
   function updatePositions() {
