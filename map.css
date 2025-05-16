@@ -50,3 +50,19 @@ body {
   white-space: nowrap;
   z-index: 10;
 }
+
+#time-slider {
+  width: 300px;
+}
+
+#selected-time {
+  font-weight: bold;
+}
+
+#any-time {
+  font-style: italic;
+  color: #888;
+}
+header {
+  padding: 0.5em 1em;
+}

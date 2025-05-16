@@ -16,7 +16,15 @@
     <script src="map.js" type="module"></script>
   </head>
   <body>
-    <h1>🚴🏼‍♀️ Bikewatching</h1>
+    <header style="display: flex; align-items: baseline; gap: 1em;">
+      <h1>🚴🏼‍♀️ Bikewatching</h1>
+      <label style="margin-left: auto;">
+        Filter by time:
+        <input id="time-slider" type="range" min="-1" max="1440" value="-1" />
+        <time id="selected-time" style="display: block;"></time>
+        <em id="any-time" style="display: block; color: #888;">(any time)</em>
+      </label>
+    </header>    
     <div id="map">
       <svg></svg> <!-- This is where D3 will render markers -->
     </div>
