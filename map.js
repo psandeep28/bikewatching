@@ -65,12 +65,13 @@ map.on('load', async () => {
   try {
     const jsonurl = 'https://dsc106.com/labs/lab07/data/bluebikes-stations.json';
     const jsonData = await d3.json(jsonurl);
-    stations = jsonData;
+    stations = jsonData.data.stations; // ✅ Corrected!
     console.log('Loaded Stations:', stations);
   } catch (error) {
     console.error('Error loading Bluebikes data:', error);
     return;
   }
+  
 
   // Add station circles
   const circles = svg
