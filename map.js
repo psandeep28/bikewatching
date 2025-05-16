@@ -43,7 +43,7 @@ map.on('load', async () => {
   // --- Add Cambridge bike lanes ---
   map.addSource('cambridge_route', {
     type: 'geojson',
-    data: 'https://data.cambridgema.gov/api/geospatial/8b3y-3v8f?method=export&format=GeoJSON',
+    data: 'https://raw.githubusercontent.com/cambridgegis/cambridgegis_data/main/Recreation/Bike_Facilities/RECREATION_BikeFacilities.geojson',
   });
 
   map.addLayer({
@@ -70,6 +70,10 @@ map.on('load', async () => {
     console.error('Error loading Bluebikes station data:', error);
     return;
   }
+
+  console.log('Max total traffic:', d3.max(stations, d => d.totalTraffic));
+console.log(stations.slice(0, 5)); // Optional: print first 5 stations for manual inspection
+
 
   // --- Load traffic data ---
   let trips = [];
