@@ -97,14 +97,16 @@ console.log(stations.slice(0, 5)); // Optional: print first 5 stations for manua
     (d) => d.end_station_id
   );
 
-  // --- Add traffic info to each station ---
+
+
   stations = stations.map((station) => {
-    const id = station.Number;
+    const id = station.short_name; // ✅ Correct field
     station.departures = departures.get(id) ?? 0;
     station.arrivals = arrivals.get(id) ?? 0;
     station.totalTraffic = station.departures + station.arrivals;
     return station;
   });
+  
 
   // --- Create square root scale for circle radius ---
   const radiusScale = d3
