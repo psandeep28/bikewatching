@@ -7,6 +7,8 @@ mapboxgl.accessToken = 'pk.eyJ1IjoicHNhbmRlZXAiLCJhIjoiY21hcWIzNzFkMDgwYTJqcTZ5a
 
 let timeFilter = -1; // Global variable to store the current slider filter value
 
+const stationFlow = d3.scaleQuantize().domain([0, 1]).range([0, 0.5, 1]);
+
 function formatTime(minutes) {
   const date = new Date(0, 0, 0, 0, minutes);
   return date.toLocaleString('en-US', { timeStyle: 'short' });
@@ -53,7 +55,6 @@ function computeStationTraffic(stations, trips) {
 
 let radiusScale = d3.scaleSqrt().range([0, 25]);
 
-mapboxgl.accessToken = mapboxgl.accessToken;
 const map = new mapboxgl.Map({
   container: 'map',
   style: 'mapbox://styles/mapbox/streets-v12',
@@ -65,13 +66,13 @@ const map = new mapboxgl.Map({
 
 function updateScatterPlot(filteredTrips, stations, circles) {
   const filteredStations = computeStationTraffic(stations, filteredTrips);
-
   timeFilter === -1 ? radiusScale.range([0, 25]) : radiusScale.range([3, 50]);
 
   circles
     .data(filteredStations, (d) => d.short_name)
     .join('circle')
-    .attr('r', (d) => radiusScale(d.totalTraffic));
+    .attr('r', (d) => radiusScale(d.totalTraffic))
+    .style('--departure-ratio', (d) => stationFlow(d.departures / d.totalTraffic));
 }
 
 map.on('load', async () => {
@@ -135,6 +136,7 @@ map.on('load', async () => {
     .attr('stroke', 'white')
     .attr('stroke-width', 1.5)
     .attr('opacity', 0.8)
+    .style('--departure-ratio', (d) => stationFlow(d.departures / d.totalTraffic))
     .on('mouseover', function (event, d) {
       tooltip
         .style('display', 'block')
