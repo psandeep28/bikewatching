@@ -72,7 +72,9 @@ function updateScatterPlot(filteredTrips, stations, circles) {
     .data(filteredStations, (d) => d.short_name)
     .join('circle')
     .attr('r', (d) => radiusScale(d.totalTraffic))
-    .style('--departure-ratio', (d) => stationFlow(d.departures / d.totalTraffic));
+    .style('--departure-ratio', (d) =>
+      d.totalTraffic === 0 ? 0.5 : stationFlow(d.departures / d.totalTraffic)
+    )
 }
 
 map.on('load', async () => {
@@ -132,7 +134,6 @@ map.on('load', async () => {
     .enter()
     .append('circle')
     .attr('r', (d) => radiusScale(d.totalTraffic))
-    .attr('fill', 'steelblue')
     .attr('stroke', 'white')
     .attr('stroke-width', 1.5)
     .attr('opacity', 0.8)
